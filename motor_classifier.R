@@ -206,6 +206,7 @@ find_motor_class <- function(impulse){
           
           if(impulse > as.numeric(lower_bound) && impulse <= as.numeric(upper_bound)){
             rank = motor_ranges[rank,3]
+            return(rank)
           }
         }
       }
