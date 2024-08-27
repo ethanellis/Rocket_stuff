@@ -15,8 +15,6 @@ motors=c(
   'A6-4_motor1_quest_2024-08-02 21-17-52-174.txt'
 )
 
-
-
 #######################################################################FUNCTIONS##################################################################################
 
 ## define function to convert force values to newtons and time values to seconds
@@ -53,7 +51,7 @@ find_bounds <- function(thrust_data){
         }
       }
       if(start_trigger){
-        if((diff < 0.05 && thrust_data$force[row] < 0) || row == nrow(thrust_data)){
+        if((diff < 0.05 && thrust_data$force[row] < 0.05) || row == (nrow(thrust_data)-5)){
           end_index = row + 5
           end = append(end, end_index)
           start_trigger = F
