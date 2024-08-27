@@ -202,7 +202,7 @@ find_motor_class <- function(impulse){
       #O class motors reside above 40960
       if(impulse <= 0.3125){
         rank = "Below A 1/4"
-      }else if(impulse > 40960){
+      }else if(impulse > 1310720){
         rank = "U or above"
       }else{
         for(rank in 1:nrow(motor_ranges)){
