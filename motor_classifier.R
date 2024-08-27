@@ -175,30 +175,30 @@ find_motor_class <- function(impulse){
   tryCatch(
     expr = {
       motor_ranges=rbind(
-        c(0.3125, 0.625, "A 1/8"),
-        c(0.625, 1.25, "A 1/4"),
-        c(1.25, 2.5, "A 1/2"),
-        c(2.5, 5, "A"),
-        c(5, 10, "B"),
-        c(10, 20, "C"),
-        c(20, 40, "D"),
-        c(40, 80, "E"),
-        c(80, 160, "F"),
-        c(160 ,320, "G"),
-        c(320, 640, "H"),
-        c(640, 1280, "I"),
-        c(1280, 2560, "J"),
-        c(2560, 5120, "K"),
-        c(5120, 10240, "L"),
-        c(10240, 20480, "M"),
-        c(20480, 40960, "N")
+        c(0.3125, 0.625, "A 1/4"),
+        c(0.625, 1.25, "A 1/2"),
+        c(1.25, 2.5, "A"),
+        c(2.5, 5, "B"),
+        c(5, 10, "C"),
+        c(10, 20, "D"),
+        c(20, 40, "E"),
+        c(40, 80, "F"),
+        c(80, 160, "G"),
+        c(160 ,320, "H"),
+        c(320, 640, "I"),
+        c(640, 1280, "J"),
+        c(1280, 2560, "K"),
+        c(2560, 5120, "L"),
+        c(5120, 10240, "M"),
+        c(10240, 20480, "N"),
+        c(20480, 40960, "O")
       )
         
       #O class motors reside above 40960
       if(impulse <= 0.3125){
-        rank = "Below A 1/8"
+        rank = "Below A 1/4"
       }else if(impulse > 40960){
-        rank = "O or above"
+        rank = "P or above"
       }else{
         for(rank in 1:nrow(motor_ranges)){
           upper_bound = motor_ranges[rank,2]
