@@ -191,14 +191,19 @@ find_motor_class <- function(impulse){
         c(2560, 5120, "L"),
         c(5120, 10240, "M"),
         c(10240, 20480, "N"),
-        c(20480, 40960, "O")
+        c(20480, 40960, "O"),
+        c(40960, 81920, "P"),
+        c(81920, 163840, "Q"),
+        c(163840, 327680, "R"),
+        c(327680, 655360, "S"),
+        c(655360, 1310720, "T")
       )
         
       #O class motors reside above 40960
       if(impulse <= 0.3125){
         rank = "Below A 1/4"
       }else if(impulse > 40960){
-        rank = "P or above"
+        rank = "U or above"
       }else{
         for(rank in 1:nrow(motor_ranges)){
           upper_bound = motor_ranges[rank,2]
