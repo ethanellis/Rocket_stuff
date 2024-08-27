@@ -2,7 +2,8 @@ library(ggplot2)
 ##########################################################################SETUP###################################################################################
 
 #define file path to motor thrust files
-motor_filepath='C:/Users/clae5/OneDrive/Desktop/Rocket_stuff-main/Rocket_stuff-main/motor_files'
+#motor_filepath='C:/Users/clae5/OneDrive/Desktop/Rocket_stuff-main/Rocket_stuff-main/motor_files'
+motor_filepath = paste(getwd(), 'motor_files', sep='/')
 
 #input motor file names
 motors=c(
@@ -166,7 +167,61 @@ burn_time <- function(thrust_data, start_index, end_index){
 }
 
 
-
+## define function that finds motor class based on impulse
+find_motor_class <- function(impulse){
+  
+  rank = NA
+  
+  tryCatch(
+    expr = {
+      motor_ranges=rbind(
+        c(0.3125, 0.625, "A 1/8"),
+        c(0.625, 1.25, "A 1/4"),
+        c(1.25, 2.5, "A 1/2"),
+        c(2.5, 5, "A"),
+        c(5, 10, "B"),
+        c(10, 20, "C"),
+        c(20, 40, "D"),
+        c(40, 80, "E"),
+        c(80, 160, "F"),
+        c(160 ,320, "G"),
+        c(320, 640, "H"),
+        c(640, 1280, "I"),
+        c(1280, 2560, "J"),
+        c(2560, 5120, "K"),
+        c(5120, 10240, "L"),
+        c(10240, 20480, "M"),
+        c(20480, 40960, "N")
+      )
+        
+      #O class motors reside above 40960
+      if(impulse <= 0.3125){
+        rank = "Below A 1/8"
+      }else if(impulse > 40960){
+        rank = "O or above"
+      }else{
+        for(rank in 1:nrow(motor_ranges)){
+          upper_bound = motor_ranges[rank,2]
+          lower_bound = motor_ranges[rank,1]
+          
+          if(impulse > as.numeric(lower_bound) && impulse <= as.numeric(upper_bound)){
+            rank = motor_ranges[rank,3]
+          }
+        }
+      }
+    },
+    error=function(e){
+      print(e)
+    },
+    warning=function(w){
+      print(w)
+    }
+    
+  )
+  
+  return(rank)
+  
+}
 
 
 ####################################################################SCRIPT########################################################################################
@@ -188,12 +243,14 @@ for(motor in 1:length(motors)){
   thrust_data = convert_data(thrust_data)
   bounds = find_bounds(thrust_data)
   impulse = find_impulse(thrust_data, bounds[1], bounds[2])
+  class = find_motor_class(impulse)
   maxThrust = max_thrust(thrust_data, bounds[1], bounds[2])
   burnTime = burn_time(thrust_data, bounds[1], bounds[2])
   
   
   #print out motor analysis
   print(paste("TOTAL IMPULSE (N*s):", impulse, sep=" "))
+  print(paste("MOTOR CLASS:", class, sep=" "))
   print(paste("MAX THRUST (N):", maxThrust, sep=" "))
   print(paste("BURN TIME (s):", burnTime, sep=" "))
   print("*******************************************")
