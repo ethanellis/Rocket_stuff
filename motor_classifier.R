@@ -85,13 +85,16 @@ find_bounds <- function(thrust_data){
   }
   
   return_bounds = c(start[max_index], end[max_index])
+  return(return_bounds)
   
 }
 
 
 ## define function that, given thrust data and time bounds, computes impulse
-find_impulse <- function(thrust_data, start_index, end_index){
-  
+find_impulse <- function(thrust_data, bounds){
+
+  start_index = bounds[1]
+  end_index = bounds[2]
   impulse = NA
   
   tryCatch(
@@ -120,8 +123,10 @@ find_impulse <- function(thrust_data, start_index, end_index){
 
 
 ## define function that finds maximum thrust
-max_thrust <- function(thrust_data, start_index, end_index){
-  
+max_thrust <- function(thrust_data, bounds){
+
+  start_index = bounds[1]
+  end_index = bounds[2]
   max_thrust_val = NA
   
   tryCatch(
@@ -144,7 +149,10 @@ max_thrust <- function(thrust_data, start_index, end_index){
 
 
 ##define function that finds burn time
-burn_time <- function(thrust_data, start_index, end_index){
+burn_time <- function(thrust_data, bounds){
+
+  start_index = bounds[1]
+  end_index = bounds[2]
   
   burn_time_val = NA
   
@@ -246,10 +254,10 @@ for(motor in 1:length(motors)){
   #perform motor analysis and determine bounds for plotting
   thrust_data = convert_data(thrust_data)
   bounds = find_bounds(thrust_data)
-  impulse = find_impulse(thrust_data, bounds[1], bounds[2])
+  impulse = find_impulse(thrust_data, bounds)
   class = find_motor_class(impulse)
-  maxThrust = max_thrust(thrust_data, bounds[1], bounds[2])
-  burnTime = burn_time(thrust_data, bounds[1], bounds[2])
+  maxThrust = max_thrust(thrust_data, bounds)
+  burnTime = burn_time(thrust_data, bounds)
   
   
   #print out motor analysis
